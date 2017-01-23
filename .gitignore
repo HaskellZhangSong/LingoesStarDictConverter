@@ -1,0 +1,10 @@
+target/
+out/
+.idea/
+Dict.iml
+indexFile
+*.iml
+*.indexFile
+\#*\#
+*.log
+*.log.*
