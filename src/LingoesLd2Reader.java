@@ -57,12 +57,9 @@ public class LingoesLd2Reader {
             new SensitiveStringDecoder(Charset.forName("EUC-JP")) };
 
     public static void main(final String[] args) throws IOException {
-        final String ld2File = "E:/FTP/LingoesDict/Fundset Deutsch to Chinese.ld2";
+        final String ld2File = "E:/FTP/LingoesDict/Vicon Russian-English Dictionary.ld2";
         // read lingoes ld2 into byte array
         final ByteBuffer dataRawBytes;
-
-        Path ld2FilePath = Paths.get(ld2File);
-
         RandomAccessFile file = new RandomAccessFile(ld2File, "r");
         FileChannel fChannel = file.getChannel();
         dataRawBytes = ByteBuffer.allocate((int) fChannel.size());
@@ -168,7 +165,8 @@ public class LingoesLd2Reader {
         final FileOutputStream indexWriter = new FileOutputStream(indexFile);
 
         //释意文件
-        final FileWriter outputWriter = new FileWriter(extractedOutputFile);
+        final FileOutputStream outputWriter = new FileOutputStream(extractedOutputFile);
+
         // 读解压后的文件
         final FileChannel fChannel = file.getChannel();
         final ByteBuffer dataRawBytes = ByteBuffer.allocate((int) fChannel.size());
@@ -212,11 +210,12 @@ public class LingoesLd2Reader {
             indexWriter.write(definitionLengthIntegerByte);
 
             currDefPosition += defintionNumOfBytes;
-            outputWriter.write(defData[1]);
+            outputWriter.write(defData[1].getBytes("UTF-8"));
 
             //System.out.println(defData[0] + " = " + defData[1]);
             counter++;
         }
+
 
         // 给出最后的information文件
         File idxFile = new File(indexFile);
@@ -232,6 +231,7 @@ public class LingoesLd2Reader {
                 "bookname="+dictName.substring(0,dictName.lastIndexOf(".")));
         infomationFileWriter.flush();
         indexWriter.flush();
+        outputWriter.flush();
         System.out.println("成功读出" + counter + "组数据。");
     }
 
